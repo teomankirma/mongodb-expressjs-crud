@@ -1,4 +1,4 @@
-const User = require("../models/signup.model");
+const User = require("../models/user.model");
 const path = require("path");
 
 const getSignupPage = (req, res) => {

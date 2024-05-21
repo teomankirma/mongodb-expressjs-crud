@@ -4,6 +4,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const signupRoute = require("./routes/signup.route");
 const signinRoute = require("./routes/signin.route");
+const dashboardRoute = require("./routes/dashboard.route");
 
 // middleware
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // routes
 app.use("/signup", signupRoute);
 app.use("/signin", signinRoute);
+app.use("/dashboard", dashboardRoute);
 
 app.get("/", (req, res) => {
   // Send the "index.html" file
