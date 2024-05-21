@@ -5,12 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
-  <script src="../scripts/signup.js" defer></script>
+  <script>
+    window.onload = function () {
+      document.getElementById("signupForm").onsubmit = async function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const response = await fetch("/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
+          });
+
+          const data = await response.json();
+
+          alert(data.message);
+
+          if (response.status === 201) {
+            window.location.href = "/"; // Navigate to home page
+          }
+        } catch (error) {
+          alert("An error occurred: " + error.message);
+        }
+      };
+    };
+  </script>
 </head>
 
 <body>
   <h2>Sign Up</h2>
-  <form action="/signup" method="post" id="signupForm">
+  <form method="post" id="signupForm">
     <label for="username">Username:</label><br />
     <input type="text" id="username" name="username" pattern="[a-z]*" title="Lowercase letters only, no spaces"
       required /><br />
