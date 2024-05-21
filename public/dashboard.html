@@ -12,9 +12,18 @@
       if (user) {
         document.getElementById('username').textContent = user.username;
       } else {
-        window.location.href = "/signin.html"; // Redirect to sign-in page
+        window.location.href = "/signin"; // Redirect to sign-in page
       }
     };
+
+    const signOut = () => {
+      const confirmation = confirm("Do you really want to sign out?");
+
+      if (confirmation) {
+        localStorage.removeItem('user');
+        window.location.href = "/"; // Redirect to home page
+      }
+    }
   </script>
 </head>
 
@@ -25,7 +34,7 @@
       <button>Edit Profile</button>
     </a>
     <br />
-    <button>Sign Out</button>
+    <button onclick="signOut()">Sign Out</button>
   </div>
 </body>
 

@@ -7,6 +7,12 @@
   <title>Sign In</title>
   <script>
     window.onload = function () {
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (user)
+        window.location.href = "/dashboard"; // Redirect to dashboard page
+
+
       document.getElementById("signinForm").onsubmit = async function (e) {
         e.preventDefault();
 
