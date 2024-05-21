@@ -24,9 +24,13 @@
 
           const data = await response.json();
 
+
           if (response.ok) {
-            alert(data.message);
-            window.location.href = "/dashboard"; // Navigate to dashboard
+            if (response.ok) {
+              alert(data.message);
+              localStorage.setItem('user', JSON.stringify(data.user));
+              window.location.href = "/dashboard.html"; // Navigate to dashboard page
+            }
           } else {
             alert(data.message);
           }

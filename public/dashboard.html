@@ -5,10 +5,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
+  <script>
+    window.onload = function () {
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (user) {
+        document.getElementById('username').textContent = user.username;
+        // Add more fields as needed
+      } else {
+        window.location.href = "/signin.html"; // Redirect to sign-in page
+      }
+    };
+  </script>
 </head>
 
 <body>
-  dashboard
+  <h2>Welcome, <span id="username"></span>!</h2>
 </body>
 
 </html>
