@@ -2,9 +2,13 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
+const signupRoute = require("./routes/signup.route");
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
+
+// routes
+app.use("/signup", signupRoute);
 
 app.get("/", (req, res) => {
   // Send the "index.html" file
