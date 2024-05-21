@@ -8,7 +8,19 @@
 </head>
 
 <body>
-  Edit Profile
+  <form id="editProfileForm" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" pattern="[a-z]*" title="Lowercase letters only, no spaces"
+      minlength="3" maxlength="20" required /><br />
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required minlength="8">
+    <br>
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" required>
+    <br>
+    <input type="submit" value="Save Changes">
+  </form>
 </body>
 
 </html>

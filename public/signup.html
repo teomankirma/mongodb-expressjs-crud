@@ -42,7 +42,7 @@
   <form method="post" id="signupForm">
     <label for="username">Username:</label><br />
     <input type="text" id="username" name="username" pattern="[a-z]*" title="Lowercase letters only, no spaces"
-      required /><br />
+      minlength="3" maxlength="20" required /><br />
     <label for="password">Password:</label><br />
     <input type="password" id="password" name="password" minlength="8" title="8 characters minimum" required /><br />
     <input type="submit" value="Sign Up" />
