@@ -7,10 +7,10 @@
   <title>Dashboard</title>
   <script>
     window.onload = function () {
-      const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem("user"));
 
       if (user) {
-        document.getElementById('username').textContent = user.username;
+        document.getElementById("username").textContent = user.username;
       } else {
         window.location.href = "/signin"; // Redirect to sign-in page
       }
@@ -20,7 +20,7 @@
       const confirmation = confirm("Do you really want to sign out?");
 
       if (confirmation) {
-        localStorage.removeItem('user');
+        localStorage.removeItem("user");
         window.location.href = "/"; // Redirect to home page
       }
     }

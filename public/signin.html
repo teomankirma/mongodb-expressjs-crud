@@ -30,14 +30,12 @@
 
           const data = await response.json();
 
-
           if (response.ok) {
-            if (response.ok) {
-              alert(data.message);
-              localStorage.setItem('user', JSON.stringify(data.user));
-              window.location.href = "/dashboard"; // Navigate to dashboard page
-            }
-          } else {
+            alert(data.message);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            window.location.href = "/dashboard"; // Navigate to dashboard page
+          }
+          else {
             alert(data.message);
           }
         } catch (error) {
