@@ -17,7 +17,11 @@ const postSignin = async (req, res) => {
     }
 
     // user is authenticated
-    return res.status(200).json({ message: "You signed in successfully" });
+    // remove password from the user object before sending
+    user.password = undefined;
+    return res
+      .status(200)
+      .json({ message: "You signed in successfully", user });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }

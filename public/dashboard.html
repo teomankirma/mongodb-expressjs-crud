@@ -5,10 +5,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
+  <script>
+    window.onload = function () {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (user) {
+        document.getElementById("username").textContent = user.username;
+      } else {
+        window.location.href = "/signin"; // Redirect to sign-in page
+      }
+    };
+
+    const signOut = () => {
+      const confirmation = confirm("Do you really want to sign out?");
+
+      if (confirmation) {
+        localStorage.removeItem("user");
+        window.location.href = "/"; // Redirect to home page
+      }
+    }
+  </script>
 </head>
 
 <body>
-  dashboard
+  <h2>Welcome, <span id="username"></span>!</h2>
+  <div>
+    <a href="/change-password">
+      <button>Change Password</button>
+    </a>
+    <br />
+    <button onclick="signOut()">Sign Out</button>
+  </div>
 </body>
 
 </html>
