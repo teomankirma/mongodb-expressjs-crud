@@ -52,7 +52,7 @@
             } else {
 
               // Update the user object in localStorage
-              user.reservations.push({ place, date, people });
+              user.reservations.push({ place, date, people, _id: data._id });
               localStorage.setItem('user', JSON.stringify(user));
 
               alert('Reservation added successfully');

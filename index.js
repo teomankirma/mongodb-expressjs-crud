@@ -7,6 +7,7 @@ const signinRoute = require("./routes/signin.route");
 const dashboardRoute = require("./routes/dashboard.route");
 const changePasswordRoute = require("./routes/change-password.route");
 const newReservationRoute = require("./routes/new-reservation.route");
+const deleteReservationRoute = require("./routes/delete-reservation.route");
 
 // middleware
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/signin", signinRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/change-password", changePasswordRoute);
 app.use("/new-reservation", newReservationRoute);
+app.use("/delete-reservation", deleteReservationRoute);
 
 app.get("/", (req, res) => {
   // Send the "index.html" file

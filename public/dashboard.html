@@ -28,15 +28,15 @@
           const peopleElement = document.createElement('p');
           peopleElement.textContent = `People: ${reservation.people}`;
 
-          const deleteButton = document.createElement('button');
-          deleteButton.textContent = 'Delete';
-          deleteButton.id = reservation._id;
-          // deleteButton.onclick = deleteReservation;
+          const cancelButton = document.createElement('button');
+          cancelButton.textContent = 'Cancel Reservation';
+          cancelButton.id = reservation._id;
+          cancelButton.onclick = cancelReservation;
 
           listItem.appendChild(placeElement);
           listItem.appendChild(dateElement);
           listItem.appendChild(peopleElement);
-          listItem.appendChild(deleteButton);
+          listItem.appendChild(cancelButton);
 
           reservationsList.appendChild(listItem);
         })
@@ -47,6 +47,48 @@
       }
 
     };
+
+    // Cancel reservation function
+    const cancelReservation = async (event) => {
+      const reservationId = event.target.id;
+
+      // Get the user object from localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      // Confirm with the user before deleting the reservation
+      const confirmDelete = confirm('Are you sure you want to delete this reservation?');
+
+      if (!confirmDelete) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`/delete-reservation/${reservationId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user._id }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to delete reservation');
+        }
+
+        // Update the user object in localStorage
+        const reservationIndex = user.reservations.findIndex(
+          (reservation) => reservation._id === reservationId
+        );
+        user.reservations.splice(reservationIndex, 1);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        alert('Reservation deleted successfully');
+        location.reload();
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
 
     // Sign out function
     const signOut = () => {
