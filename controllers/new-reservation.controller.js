@@ -20,7 +20,16 @@ const addReservation = async (req, res) => {
 
     try {
       await user.save();
-      res.status(200).send(user);
+      // Find the newly created reservation
+      const createdReservation =
+        user.reservations[user.reservations.length - 1];
+
+      res.status(201).send({
+        _id: createdReservation._id,
+        place: createdReservation.place,
+        date: createdReservation.date,
+        people: createdReservation.people,
+      });
     } catch (err) {
       res.status(500).send(err);
     }
