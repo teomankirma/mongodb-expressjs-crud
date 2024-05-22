@@ -14,8 +14,41 @@
       } else {
         window.location.href = "/signin"; // Redirect to sign-in page
       }
+
+      // Render reservations
+      const reservationsList = document.getElementById("reservations");
+
+      if (user && user.reservations.length > 0) {
+        user.reservations.forEach(reservation => {
+          const listItem = document.createElement('li');
+          const placeElement = document.createElement('p');
+          placeElement.textContent = `Place: ${reservation.place}`;
+          const dateElement = document.createElement('p');
+          dateElement.textContent = `Date: ${reservation.date}`;
+          const peopleElement = document.createElement('p');
+          peopleElement.textContent = `People: ${reservation.people}`;
+
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.id = reservation._id;
+          // deleteButton.onclick = deleteReservation;
+
+          listItem.appendChild(placeElement);
+          listItem.appendChild(dateElement);
+          listItem.appendChild(peopleElement);
+          listItem.appendChild(deleteButton);
+
+          reservationsList.appendChild(listItem);
+        })
+      } else {
+        const listItem = document.createElement("p");
+        listItem.textContent = "You don't have any reservations.";
+        reservationsList.appendChild(listItem);
+      }
+
     };
 
+    // Sign out function
     const signOut = () => {
       const confirmation = confirm("Do you really want to sign out?");
 
@@ -40,6 +73,9 @@
     <br />
     <button onclick="signOut()">Sign Out</button>
   </div>
+
+  <h3>Your Reservations</h3>
+  <ul id="reservations"></ul>
 </body>
 
 </html>
