@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
 
+const ReservationsSchema = mongoose.Schema({
+  place: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  people: {
+    type: Number,
+    required: true,
+  },
+});
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -9,6 +24,10 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  reservations: {
+    type: [ReservationsSchema],
+    default: [],
   },
 });
 

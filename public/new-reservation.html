@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Reservation</title>
+  <script>
+    window.onload = function () {
+      // Set the min attribute of the date input field to the current date
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').setAttribute('min', today);
+
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (!user)
+        window.location.href = "/signin"; // Redirect to signin page if user doesn't exists
+
+      // Get the form element
+      const form = document.getElementById('newReservationForm');
+
+      // Add an event listener to the form
+      form.addEventListener('submit', function (event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+
+        // Get the form data
+        const place = document.getElementById('place').value;
+        const date = document.getElementById('date').value;
+        const people = document.getElementById('people').value;
+
+        // Create the request body
+        const body = {
+          userId: user._id,
+          place,
+          date,
+          people
+        };
+
+        // Send a POST request to the server
+        fetch('/new-reservation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              alert(data.error);
+            } else {
+
+              // Update the user object in localStorage
+              user.reservations.push({ place, date, people, _id: data._id });
+              localStorage.setItem('user', JSON.stringify(user));
+
+              alert('Reservation added successfully');
+              window.location.href = '/dashboard'; // Redirect to dashboard page
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      });
+    };
+  </script>
+</head>
+
+<body>
+  <h2>New Reservation</h2>
+  <form id="newReservationForm">
+    <label for="place">Place:</label>
+    <br />
+    <select id="place" required>
+      <option value="">Select a place</option>
+      <option value="Place 1">Place 1</option>
+      <option value="Place 2">Place 2</option>
+      <option value="Place 3">Place 3</option>
+    </select>
+    <br />
+    <label for="date">Date:</label>
+    <br />
+    <input type="date" id="date" required>
+    <br />
+    <label for="people">Number of People:</label>
+    <br />
+    <input type="number" id="people" required min="1">
+    <br />
+    <input type="submit" value="Submit">
+  </form>
+</body>
+
+</html>
