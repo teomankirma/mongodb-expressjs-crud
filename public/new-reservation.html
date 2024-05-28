@@ -167,7 +167,7 @@
     <br />
     <label for="security-code">Security Code:</label>
     <br />
-    <input type="text" id="security-code" required maxlength="3">
+    <input type="text" id="security-code" required pattern="\d{3}" title="Security code must be exactly 3 digits">
     <br />
     <input type="submit" value="Submit">
   </form>
