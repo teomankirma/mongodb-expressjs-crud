@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Reservation</title>
   <script>
+    let ticketTypesData = [];
+
     window.onload = function () {
       // Set the min attribute of the date input field to the current date
       const today = new Date().toISOString().split('T')[0];
@@ -23,6 +25,8 @@
       fetch('/ticket-types')
         .then(response => response.json())
         .then(ticketTypes => {
+          ticketTypesData = ticketTypes;
+
           // For each ticket type
           ticketTypes.forEach(ticketType => {
             // Create a new option element
@@ -84,6 +88,26 @@
             console.error('Error:', error);
           });
       });
+
+      const ticketTypeSelect = document.getElementById('ticket-type');
+      ticketTypeSelect.addEventListener("change", updatePrice);
+
+      const peopleInput = document.getElementById('people');
+      peopleInput.addEventListener("input", updatePrice);
+
+      function updatePrice() {
+        const ticketType = document.getElementById('ticket-type');
+        const ticketTypeId = ticketType.selectedOptions[0].id;
+        const people = peopleInput.value;
+
+        if (ticketType.value && people > 0) {
+          const selectedTicketType = ticketTypesData.find(t => t._id === ticketTypeId);
+          const price = selectedTicketType.basePrice * people;
+          document.getElementById('price').textContent = `Price: $${price}`;
+        } else {
+          document.getElementById('price').textContent = '';
+        }
+      }
     };
   </script>
 </head>
@@ -103,10 +127,12 @@
     <br />
     <label for="people">Number of People:</label>
     <br />
-    <input type="number" id="people" required min="1">
+    <input type="number" id="people" required min="1" max="10">
     <br />
+    <p id="price"></p>
     <input type="submit" value="Submit">
   </form>
+
 </body>
 
 </html>
