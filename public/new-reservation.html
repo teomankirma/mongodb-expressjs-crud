@@ -14,7 +14,7 @@
       const currentYear = today.getFullYear();
       const currentMonth = today.getMonth() + 1;
 
-      document.getElementById('date').setAttribute('min', today);
+      document.getElementById('date').setAttribute('min', today.toISOString().split('T')[0]);
 
 
       document.getElementById("expiry-year").setAttribute("min", currentYear)
