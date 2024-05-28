@@ -155,7 +155,7 @@
     <h3>Enter Your Card Information</h3>
     <label for="card-number">Credit Card Number:</label>
     <br />
-    <input type="text" id="card-number" required maxlength="16">
+    <input type="text" id="card-number" required pattern="\d{16}" title="Credit card number must be exactly 16 digits">
     <br />
     <label for="expiry-month">Expiry Month:</label>
     <br />
