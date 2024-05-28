@@ -10,8 +10,27 @@
 
     window.onload = function () {
       // Set the min attribute of the date input field to the current date
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth() + 1;
+
       document.getElementById('date').setAttribute('min', today);
+
+
+      document.getElementById("expiry-year").setAttribute("min", currentYear)
+
+      const expiryYearInput = document.getElementById("expiry-year");
+      const expiryMonthInput = document.getElementById("expiry-month");
+
+      expiryYearInput.addEventListener("change", validateExpiryDate);
+      expiryMonthInput.addEventListener("change", validateExpiryDate);
+
+      function validateExpiryDate() {
+        if (parseInt(expiryYearInput.value, 10) === currentYear) {
+          expiryMonthInput.setAttribute("min", currentMonth);
+        }
+      }
+
 
       const user = JSON.parse(localStorage.getItem('user'));
 
@@ -130,6 +149,23 @@
     <input type="number" id="people" required min="1" max="10">
     <br />
     <p id="price"></p>
+    <h3>Enter Your Card Information</h3>
+    <label for="card-number">Credit Card Number:</label>
+    <br />
+    <input type="text" id="card-number" required maxlength="16">
+    <br />
+    <label for="expiry-month">Expiry Month:</label>
+    <br />
+    <input type="number" id="expiry-month" required min="1" max="12">
+    <br />
+    <label for="expiry-year">Expiry Year:</label>
+    <br />
+    <input type="number" id="expiry-year" required>
+    <br />
+    <label for="security-code">Security Code:</label>
+    <br />
+    <input type="text" id="security-code" required maxlength="3">
+    <br />
     <input type="submit" value="Submit">
   </form>
 
