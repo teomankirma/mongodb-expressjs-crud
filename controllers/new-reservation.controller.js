@@ -6,7 +6,7 @@ const getNewReservationPage = (req, res) => {
 };
 
 const addReservation = async (req, res) => {
-  const { userId, place, date, people } = req.body;
+  const { userId, ticketType, date, people } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -16,7 +16,7 @@ const addReservation = async (req, res) => {
       return;
     }
 
-    user.reservations.push({ place, date, people });
+    user.reservations.push({ ticketType, date, people });
 
     try {
       await user.save();
@@ -26,7 +26,7 @@ const addReservation = async (req, res) => {
 
       res.status(201).send({
         _id: createdReservation._id,
-        place: createdReservation.place,
+        ticketType: createdReservation.ticketType,
         date: createdReservation.date,
         people: createdReservation.people,
       });

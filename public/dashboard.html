@@ -21,8 +21,8 @@
       if (user && user.reservations.length > 0) {
         user.reservations.forEach(reservation => {
           const listItem = document.createElement('li');
-          const placeElement = document.createElement('p');
-          placeElement.textContent = `Place: ${reservation.place}`;
+          const ticketTypeElement = document.createElement('p');
+          ticketTypeElement.textContent = `Ticket Type: ${reservation.ticketType}`;
           const dateElement = document.createElement('p');
           dateElement.textContent = `Date: ${reservation.date}`;
           const peopleElement = document.createElement('p');
@@ -33,7 +33,7 @@
           cancelButton.id = reservation._id;
           cancelButton.onclick = cancelReservation;
 
-          listItem.appendChild(placeElement);
+          listItem.appendChild(ticketTypeElement);
           listItem.appendChild(dateElement);
           listItem.appendChild(peopleElement);
           listItem.appendChild(cancelButton);

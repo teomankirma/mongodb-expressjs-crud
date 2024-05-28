@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ticketTypeSchema = new mongoose.Schema({
-  ticketType: String,
+  type: String,
   basePrice: Number,
 });
 

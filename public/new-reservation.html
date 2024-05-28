@@ -16,6 +16,27 @@
       if (!user)
         window.location.href = "/signin"; // Redirect to signin page if user doesn't exists
 
+      // Get the select element
+      const select = document.getElementById('ticket-type');
+
+      // Fetch ticket types from the server
+      fetch('/ticket-types')
+        .then(response => response.json())
+        .then(ticketTypes => {
+          // For each ticket type
+          ticketTypes.forEach(ticketType => {
+            // Create a new option element
+            const option = document.createElement('option');
+
+            option.id = ticketType._id;
+            option.value = ticketType.type;
+            option.textContent = ticketType.type;
+
+            select.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error:', error));
+
       // Get the form element
       const form = document.getElementById('newReservationForm');
 
@@ -25,14 +46,14 @@
         event.preventDefault();
 
         // Get the form data
-        const place = document.getElementById('place').value;
+        const ticketType = document.getElementById('ticket-type').value;
         const date = document.getElementById('date').value;
         const people = document.getElementById('people').value;
 
         // Create the request body
         const body = {
           userId: user._id,
-          place,
+          ticketType,
           date,
           people
         };
@@ -52,7 +73,7 @@
             } else {
 
               // Update the user object in localStorage
-              user.reservations.push({ place, date, people, _id: data._id });
+              user.reservations.push({ ticketType, date, people, _id: data._id });
               localStorage.setItem('user', JSON.stringify(user));
 
               alert('Reservation added successfully');
@@ -70,13 +91,10 @@
 <body>
   <h2>New Reservation</h2>
   <form id="newReservationForm">
-    <label for="place">Place:</label>
+    <label for="ticket-type">Select Your Ticket Type:</label>
     <br />
-    <select id="place" required>
+    <select id="ticket-type" required>
       <option value="">Select a place</option>
-      <option value="Place 1">Place 1</option>
-      <option value="Place 2">Place 2</option>
-      <option value="Place 3">Place 3</option>
     </select>
     <br />
     <label for="date">Date:</label>

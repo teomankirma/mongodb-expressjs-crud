@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ReservationsSchema = mongoose.Schema({
-  place: {
+  ticketType: {
     type: String,
     required: true,
   },
