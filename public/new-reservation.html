@@ -114,6 +114,12 @@
       const ticketTypeSelect = document.getElementById('ticket-type');
       ticketTypeSelect.addEventListener("change", updatePrice);
 
+      ticketTypeSelect.addEventListener("change", function () {
+        const selectedTicketType = ticketTypesData.find(t => t._id === ticketTypeSelect.selectedOptions[0].id);
+        document.getElementById('ticket-type-description').textContent = selectedTicketType.description;
+        document.getElementById('single-ticket-price').textContent = `(A single ticket price is $${selectedTicketType.basePrice}.)`;
+      });
+
       const peopleInput = document.getElementById('people');
       peopleInput.addEventListener("input", updatePrice);
 
@@ -125,7 +131,7 @@
         if (ticketType.value && people > 0) {
           const selectedTicketType = ticketTypesData.find(t => t._id === ticketTypeId);
           const price = selectedTicketType.basePrice * people;
-          document.getElementById('price').textContent = `Price: $${price}`;
+          document.getElementById('price').textContent = `Total Price: $${price}`;
         } else {
           document.getElementById('price').textContent = '';
         }
@@ -143,6 +149,8 @@
       <option value="">Select a place</option>
     </select>
     <br />
+    <p id="ticket-type-description"></p>
+    <p id="single-ticket-price"></p>
     <label for="date">Date:</label>
     <br />
     <input type="date" id="date" required>
