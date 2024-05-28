@@ -27,6 +27,8 @@
           dateElement.textContent = `Date: ${reservation.date}`;
           const peopleElement = document.createElement('p');
           peopleElement.textContent = `People: ${reservation.people}`;
+          const priceElement = document.createElement('p');
+          priceElement.textContent = `Price: $${reservation.price}`;
 
           const cancelButton = document.createElement('button');
           cancelButton.textContent = 'Cancel Reservation';
@@ -36,6 +38,7 @@
           listItem.appendChild(ticketTypeElement);
           listItem.appendChild(dateElement);
           listItem.appendChild(peopleElement);
+          listItem.appendChild(priceElement);
           listItem.appendChild(cancelButton);
 
           reservationsList.appendChild(listItem);

@@ -13,6 +13,10 @@ const ReservationsSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  price: {
+    type: Number,
+    required: true,
+  },
 });
 
 const UserSchema = mongoose.Schema({

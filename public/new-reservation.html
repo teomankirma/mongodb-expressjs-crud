@@ -72,13 +72,16 @@
         const ticketType = document.getElementById('ticket-type').value;
         const date = document.getElementById('date').value;
         const people = document.getElementById('people').value;
+        const priceText = document.getElementById('price').textContent;
+        const price = priceText ? parseFloat(priceText.replace('Price: $', '')) : 0;
 
         // Create the request body
         const body = {
           userId: user._id,
           ticketType,
           date,
-          people
+          people,
+          price
         };
 
         // Send a POST request to the server
@@ -96,7 +99,7 @@
             } else {
 
               // Update the user object in localStorage
-              user.reservations.push({ ticketType, date, people, _id: data._id });
+              user.reservations.push({ ticketType, date, people, price, _id: data._id });
               localStorage.setItem('user', JSON.stringify(user));
 
               alert('Reservation added successfully');
