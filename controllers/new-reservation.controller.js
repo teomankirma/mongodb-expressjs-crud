@@ -6,7 +6,19 @@ const getNewReservationPage = (req, res) => {
 };
 
 const addReservation = async (req, res) => {
-  const { userId, place, date, people } = req.body;
+  const {
+    userId,
+    ticketType,
+    date,
+    people,
+    price,
+    saveCard,
+    cardName,
+    cardNumber,
+    expiryMonth,
+    expiryYear,
+    securityCode,
+  } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -16,19 +28,52 @@ const addReservation = async (req, res) => {
       return;
     }
 
-    user.reservations.push({ place, date, people });
+    // Check if the card name already exists
+    const existingCardName = user.savedCreditCards.find(
+      (card) => card.cardName === cardName
+    );
+    if (existingCardName) {
+      res.status(400).json({ error: "A card with this name already exists" });
+      return;
+    }
+
+    // Check if any card with the same details exists
+    const existingCard = user.savedCreditCards.find(
+      (card) =>
+        card.cardNumber === cardNumber &&
+        card.expiryMonth === expiryMonth &&
+        card.expiryYear === expiryYear &&
+        card.securityCode === securityCode
+    );
+    if (existingCard) {
+      res.status(400).json({ error: "This card has already been saved" });
+      return;
+    }
+
+    user.reservations.push({ ticketType, date, people, price });
+
+    // If saveCard is true, save the credit card information
+    if (saveCard) {
+      user.savedCreditCards.push({
+        cardName,
+        cardNumber,
+        expiryMonth,
+        expiryYear,
+        securityCode,
+      });
+    }
 
     try {
       await user.save();
-      // Find the newly created reservation
       const createdReservation =
         user.reservations[user.reservations.length - 1];
 
       res.status(201).send({
         _id: createdReservation._id,
-        place: createdReservation.place,
+        ticketType: createdReservation.ticketType,
         date: createdReservation.date,
         people: createdReservation.people,
+        price: createdReservation.price,
       });
     } catch (err) {
       res.status(500).send(err);

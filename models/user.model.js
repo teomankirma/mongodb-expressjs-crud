@@ -1,16 +1,43 @@
 const mongoose = require("mongoose");
 
 const ReservationsSchema = mongoose.Schema({
-  place: {
+  ticketType: {
     type: String,
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   people: {
     type: Number,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+});
+
+const CreditCardSchema = mongoose.Schema({
+  cardNumber: {
+    type: String,
+    required: true,
+  },
+  expiryMonth: {
+    type: String,
+    required: true,
+  },
+  expiryYear: {
+    type: String,
+    required: true,
+  },
+  securityCode: {
+    type: String,
+    required: true,
+  },
+  cardName: {
+    type: String,
     required: true,
   },
 });
@@ -27,6 +54,10 @@ const UserSchema = mongoose.Schema({
   },
   reservations: {
     type: [ReservationsSchema],
+    default: [],
+  },
+  savedCreditCards: {
+    type: [CreditCardSchema],
     default: [],
   },
 });
