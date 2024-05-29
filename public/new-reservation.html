@@ -197,6 +197,20 @@
                 `).join('');
 
                 cardContainer.innerHTML = cardHtml;
+
+                data.forEach((card, index) => {
+                  const radioButton = document.getElementById(`card${index}`);
+                  let wasChecked = radioButton.checked;
+
+                  radioButton.addEventListener('click', function () {
+                    if (wasChecked) {
+                      this.checked = false;
+                    }
+
+                    wasChecked = this.checked;
+                  });
+                });
+
               }
             })
             .catch((error) => {
