@@ -159,7 +159,7 @@
       const reservationInfo = document.querySelector('.reservation-info');
       const paymentInfo = document.querySelector('.payment-info');
 
-      goToPaymentButton.addEventListener('click', function (e) {
+      goToPaymentButton.addEventListener('click', async function (e) {
         e.preventDefault();
         const fields = reservationInfo.querySelectorAll('input, select');
 
@@ -176,7 +176,7 @@
 
         // If all fields are valid, add and remove the classes
         if (allFieldsValid) {
-          fetch(`/saved-credit-cards/${user._id}`, {
+          await fetch(`/saved-credit-cards/${user._id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -186,14 +186,18 @@
             .then(data => {
               const cardContainer = document.getElementById('card-container');
 
-              const cardHtml = data.map((card, index) => `
-            <div class="card">
-              <input type="radio" id="card${index}" name="card" value="${card._id}">
-              <label for="card${index}">${card.cardName} - **** **** **** ${card.cardNumber.slice(-4)}</label>
-            </div>
-            `).join('');
+              if (data.length === 0) {
+                cardContainer.innerHTML = "You don't have any saved cards";
+              } else {
+                const cardHtml = data.map((card, index) => `
+                  <div class="card">
+                    <input type="radio" id="card${index}" name="card" value="${card._id}">
+                    <label for="card${index}">${card.cardName} - **** **** **** ${card.cardNumber.slice(-4)}</label>
+                  </div>
+                `).join('');
 
-              cardContainer.innerHTML = cardHtml;
+                cardContainer.innerHTML = cardHtml;
+              }
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -280,7 +284,9 @@
       <br />
       <input type="text" id="card-name" class="hidden">
       <br />
-      <div id="card-container"></div>
+      <h3>Saved Cards</h3>
+      <div id="card-container">
+      </div>
       <button id="go-back">Go Back</button>
       <input type="submit" value="Submit">
     </div>
