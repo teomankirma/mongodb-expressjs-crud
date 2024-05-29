@@ -200,14 +200,23 @@
 
                 data.forEach((card, index) => {
                   const radioButton = document.getElementById(`card${index}`);
-                  let wasChecked = radioButton.checked;
+                  radioButton.setAttribute('data-checked', 'no');
 
                   radioButton.addEventListener('click', function () {
-                    if (wasChecked) {
+                    if (this.getAttribute('data-checked') === 'yes') {
                       this.checked = false;
+                      this.setAttribute('data-checked', 'no');
+                    } else {
+                      this.setAttribute('data-checked', 'yes');
                     }
 
-                    wasChecked = this.checked;
+                    // Uncheck all other radio buttons
+                    data.forEach((otherCard, otherIndex) => {
+                      if (otherIndex !== index) {
+                        const otherRadioButton = document.getElementById(`card${otherIndex}`);
+                        otherRadioButton.setAttribute('data-checked', 'no');
+                      }
+                    });
                   });
                 });
 
