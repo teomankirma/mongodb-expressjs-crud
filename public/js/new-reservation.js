@@ -113,14 +113,22 @@ const ticketTypeSelect = document.getElementById("ticket-type");
 ticketTypeSelect.addEventListener("change", updateTicketTypeDetails);
 
 function updateTicketTypeDetails() {
-  const selectedTicketType = ticketTypesData.find(
-    (t) => t._id === ticketTypeSelect.selectedOptions[0].id
-  );
-  document.getElementById("ticket-type-description").textContent =
-    selectedTicketType.description;
-  document.getElementById(
-    "single-ticket-price"
-  ).textContent = `(A single ticket price is $${selectedTicketType.basePrice}.)`;
+  const selectedOptionId = ticketTypeSelect.selectedOptions[0].id;
+
+  if (selectedOptionId === "default") {
+    document.getElementById("ticket-type-description").textContent = "";
+    document.getElementById("single-ticket-price").textContent = "";
+  } else {
+    const selectedTicketType = ticketTypesData.find(
+      (t) => t._id === selectedOptionId
+    );
+    document.getElementById("ticket-type-description").textContent =
+      selectedTicketType.description;
+    document.getElementById(
+      "single-ticket-price"
+    ).textContent = `(A single ticket price is $${selectedTicketType.basePrice}.)`;
+  }
+
   updatePrice();
 }
 
