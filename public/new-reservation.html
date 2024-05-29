@@ -117,11 +117,6 @@
               // Update the user object in localStorage
               user.reservations.push({ ticketType, date, people, price, _id: data._id });
 
-              // // If saveCard is true, update the savedCreditCards array in the user object
-              // if (saveCard) {
-              //   user.savedCreditCards.push({ cardName, cardNumber, expiryMonth, expiryYear, securityCode });
-              // }
-
               localStorage.setItem('user', JSON.stringify(user));
 
               alert('Reservation added successfully');
@@ -181,10 +176,34 @@
 
         // If all fields are valid, add and remove the classes
         if (allFieldsValid) {
+          fetch(`/saved-credit-cards/${user._id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => response.json())
+            .then(data => {
+              const cardContainer = document.getElementById('card-container');
+
+              const cardHtml = data.map((card, index) => `
+            <div class="card">
+              <input type="radio" id="card${index}" name="card" value="${card._id}">
+              <label for="card${index}">${card.cardName} - **** **** **** ${card.cardNumber.slice(-4)}</label>
+            </div>
+            `).join('');
+
+              cardContainer.innerHTML = cardHtml;
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+
           reservationInfo.classList.add('hidden');
           paymentInfo.classList.remove('hidden');
         }
       });
+
 
       const goBackButton = document.querySelector('#go-back');
 
@@ -261,6 +280,7 @@
       <br />
       <input type="text" id="card-name" class="hidden">
       <br />
+      <div id="card-container"></div>
       <button id="go-back">Go Back</button>
       <input type="submit" value="Submit">
     </div>
