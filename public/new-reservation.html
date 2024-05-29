@@ -157,6 +157,8 @@
         for (let i = 0; i < fields.length; i++) {
           if (!fields[i].checkValidity()) {
             allFieldsValid = false;
+            // Trigger the validation message
+            fields[i].reportValidity();
             break;
           }
         }
@@ -165,8 +167,6 @@
         if (allFieldsValid) {
           reservationInfo.classList.add('hidden');
           paymentInfo.classList.remove('hidden');
-        } else {
-          alert('Please fill out all fields correctly.');
         }
       });
 
