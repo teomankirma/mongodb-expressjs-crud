@@ -73,20 +73,32 @@
         // Prevent the default form submission behavior
         event.preventDefault();
 
-        // Get the form data
+        // Get the values from the form
         const ticketType = document.getElementById('ticket-type').value;
         const date = document.getElementById('date').value;
         const people = document.getElementById('people').value;
         const priceText = document.getElementById('price').textContent;
         const price = priceText ? parseFloat(priceText.replace('Total Price: $', '')) : 0;
+        const saveCard = document.getElementById('save-card').checked;
+        const cardName = document.getElementById('card-name').value;
+        const cardNumber = document.getElementById('card-number').value;
+        const expiryMonth = document.getElementById('expiry-month').value;
+        const expiryYear = document.getElementById('expiry-year').value;
+        const securityCode = document.getElementById('security-code').value;
 
-        // Create the request body
+        // Create the body object
         const body = {
           userId: user._id,
           ticketType,
           date,
           people,
-          price
+          price,
+          saveCard,
+          cardName,
+          cardNumber,
+          expiryMonth,
+          expiryYear,
+          securityCode,
         };
 
         // Send a POST request to the server
@@ -102,11 +114,16 @@
             if (data.error) {
               alert(data.error);
             } else {
-
               console.log(body)
 
               // Update the user object in localStorage
               user.reservations.push({ ticketType, date, people, price, _id: data._id });
+
+              // If saveCard is true, update the savedCreditCards array in the user object
+              if (saveCard) {
+                user.savedCreditCards.push({ cardName, cardNumber, expiryMonth, expiryYear, securityCode });
+              }
+
               localStorage.setItem('user', JSON.stringify(user));
 
               alert('Reservation added successfully');
@@ -177,6 +194,20 @@
         reservationInfo.classList.remove('hidden');
         paymentInfo.classList.add('hidden');
       });
+
+      const saveCardCheckbox = document.getElementById('save-card');
+      const cardNameLabel = document.querySelector('label[for="card-name"]');
+      const cardNameInput = document.getElementById('card-name');
+
+      saveCardCheckbox.addEventListener('change', function () {
+        if (saveCardCheckbox.checked) {
+          cardNameLabel.classList.remove('hidden');
+          cardNameInput.classList.remove('hidden');
+        } else {
+          cardNameLabel.classList.add('hidden');
+          cardNameInput.classList.add('hidden');
+        }
+      });
     };
 
   </script>
@@ -209,7 +240,7 @@
       <h3>Enter Your Card Information</h3>
       <label for="card-number">Credit Card Number:</label>
       <br />
-      <input type="text" id="card-number" required pattern="\d{16}"
+      <input type="number" id="card-number" required pattern="\d{16}"
         title="Credit card number must be exactly 16 digits">
       <br />
       <label for="expiry-month">Expiry Month:</label>
@@ -223,6 +254,13 @@
       <label for="security-code">Security Code:</label>
       <br />
       <input type="text" id="security-code" required pattern="\d{3}" title="Security code must be exactly 3 digits">
+      <br />
+      <input type="checkbox" id="save-card">
+      <label for="save-card">Do you want to save your card?</label>
+      <br />
+      <label for="card-name" class="hidden">Name your card:</label>
+      <br />
+      <input type="text" id="card-name" class="hidden">
       <br />
       <button id="go-back">Go Back</button>
       <input type="submit" value="Submit">

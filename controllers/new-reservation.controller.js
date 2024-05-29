@@ -6,7 +6,19 @@ const getNewReservationPage = (req, res) => {
 };
 
 const addReservation = async (req, res) => {
-  const { userId, ticketType, date, people, price } = req.body;
+  const {
+    userId,
+    ticketType,
+    date,
+    people,
+    price,
+    saveCard,
+    cardName,
+    cardNumber,
+    expiryMonth,
+    expiryYear,
+    securityCode,
+  } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -18,9 +30,19 @@ const addReservation = async (req, res) => {
 
     user.reservations.push({ ticketType, date, people, price });
 
+    // If saveCard is true, save the credit card information
+    if (saveCard) {
+      user.savedCreditCards.push({
+        cardName,
+        cardNumber,
+        expiryMonth,
+        expiryYear,
+        securityCode,
+      });
+    }
+
     try {
       await user.save();
-      // Find the newly created reservation
       const createdReservation =
         user.reservations[user.reservations.length - 1];
 

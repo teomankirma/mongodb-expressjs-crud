@@ -19,6 +19,29 @@ const ReservationsSchema = mongoose.Schema({
   },
 });
 
+const CreditCardSchema = mongoose.Schema({
+  cardNumber: {
+    type: Number,
+    required: true,
+  },
+  expiryMonth: {
+    type: Number,
+    required: true,
+  },
+  expiryYear: {
+    type: Number,
+    required: true,
+  },
+  securityCode: {
+    type: Number,
+    required: true,
+  },
+  cardName: {
+    type: String,
+    required: true,
+  },
+});
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -31,6 +54,10 @@ const UserSchema = mongoose.Schema({
   },
   reservations: {
     type: [ReservationsSchema],
+    default: [],
+  },
+  savedCreditCards: {
+    type: [CreditCardSchema],
     default: [],
   },
 });
