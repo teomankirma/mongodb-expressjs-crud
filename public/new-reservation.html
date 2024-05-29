@@ -114,15 +114,13 @@
             if (data.error) {
               alert(data.error);
             } else {
-              console.log(body)
-
               // Update the user object in localStorage
               user.reservations.push({ ticketType, date, people, price, _id: data._id });
 
-              // If saveCard is true, update the savedCreditCards array in the user object
-              if (saveCard) {
-                user.savedCreditCards.push({ cardName, cardNumber, expiryMonth, expiryYear, securityCode });
-              }
+              // // If saveCard is true, update the savedCreditCards array in the user object
+              // if (saveCard) {
+              //   user.savedCreditCards.push({ cardName, cardNumber, expiryMonth, expiryYear, securityCode });
+              // }
 
               localStorage.setItem('user', JSON.stringify(user));
 
