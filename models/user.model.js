@@ -21,19 +21,19 @@ const ReservationsSchema = mongoose.Schema({
 
 const CreditCardSchema = mongoose.Schema({
   cardNumber: {
-    type: Number,
+    type: String,
     required: true,
   },
   expiryMonth: {
-    type: Number,
+    type: String,
     required: true,
   },
   expiryYear: {
-    type: Number,
+    type: String,
     required: true,
   },
   securityCode: {
-    type: Number,
+    type: String,
     required: true,
   },
   cardName: {

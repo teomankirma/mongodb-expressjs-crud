@@ -28,6 +28,28 @@ const addReservation = async (req, res) => {
       return;
     }
 
+    // Check if the card name already exists
+    const existingCardName = user.savedCreditCards.find(
+      (card) => card.cardName === cardName
+    );
+    if (existingCardName) {
+      res.status(400).json({ error: "A card with this name already exists" });
+      return;
+    }
+
+    // Check if any card with the same details exists
+    const existingCard = user.savedCreditCards.find(
+      (card) =>
+        card.cardNumber === cardNumber &&
+        card.expiryMonth === expiryMonth &&
+        card.expiryYear === expiryYear &&
+        card.securityCode === securityCode
+    );
+    if (existingCard) {
+      res.status(400).json({ error: "This card has already been saved" });
+      return;
+    }
+
     user.reservations.push({ ticketType, date, people, price });
 
     // If saveCard is true, save the credit card information
