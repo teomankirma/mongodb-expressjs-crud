@@ -227,6 +227,24 @@ window.onload = function () {
                     otherRadioButton.setAttribute("data-checked", "no");
                   }
                 });
+                const formElements = [
+                  document.getElementById("card-number"),
+                  document.getElementById("expiry-month"),
+                  document.getElementById("expiry-year"),
+                  document.getElementById("security-code"),
+                  document.getElementById("save-card"),
+                  document.getElementById("card-name"),
+                ];
+                formElements.forEach((element) => {
+                  if (element) {
+                    element.disabled = this.checked;
+                  }
+                });
+                formElements.forEach((element) => {
+                  if (element) {
+                    element.value = "";
+                  }
+                });
               });
             });
           }
