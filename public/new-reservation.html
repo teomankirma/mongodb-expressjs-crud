@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Reservation</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
   <script>
     let ticketTypesData = [];
 
@@ -73,7 +78,7 @@
         const date = document.getElementById('date').value;
         const people = document.getElementById('people').value;
         const priceText = document.getElementById('price').textContent;
-        const price = priceText ? parseFloat(priceText.replace('Price: $', '')) : 0;
+        const price = priceText ? parseFloat(priceText.replace('Total Price: $', '')) : 0;
 
         // Create the request body
         const body = {
@@ -97,6 +102,8 @@
             if (data.error) {
               alert(data.error);
             } else {
+
+              console.log(body)
 
               // Update the user object in localStorage
               user.reservations.push({ ticketType, date, people, price, _id: data._id });
@@ -136,48 +143,90 @@
           document.getElementById('price').textContent = '';
         }
       }
+
+      const goToPaymentButton = document.querySelector('#go-to-payment');
+      const reservationInfo = document.querySelector('.reservation-info');
+      const paymentInfo = document.querySelector('.payment-info');
+
+      goToPaymentButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        const fields = reservationInfo.querySelectorAll('input, select');
+
+        // Check if all fields are valid
+        let allFieldsValid = true;
+        for (let i = 0; i < fields.length; i++) {
+          if (!fields[i].checkValidity()) {
+            allFieldsValid = false;
+            break;
+          }
+        }
+
+        // If all fields are valid, add and remove the classes
+        if (allFieldsValid) {
+          reservationInfo.classList.add('hidden');
+          paymentInfo.classList.remove('hidden');
+        } else {
+          alert('Please fill out all fields correctly.');
+        }
+      });
+
+      const goBackButton = document.querySelector('#go-back');
+
+      goBackButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        reservationInfo.classList.remove('hidden');
+        paymentInfo.classList.add('hidden');
+      });
     };
+
   </script>
 </head>
 
 <body>
-  <h2>New Reservation</h2>
   <form id="newReservationForm">
-    <label for="ticket-type">Select Your Ticket Type:</label>
-    <br />
-    <select id="ticket-type" required>
-      <option value="">Select a place</option>
-    </select>
-    <br />
-    <p id="ticket-type-description"></p>
-    <p id="single-ticket-price"></p>
-    <label for="date">Date:</label>
-    <br />
-    <input type="date" id="date" required>
-    <br />
-    <label for="people">Number of People:</label>
-    <br />
-    <input type="number" id="people" required min="1" max="10">
-    <br />
-    <p id="price"></p>
-    <h3>Enter Your Card Information</h3>
-    <label for="card-number">Credit Card Number:</label>
-    <br />
-    <input type="text" id="card-number" required pattern="\d{16}" title="Credit card number must be exactly 16 digits">
-    <br />
-    <label for="expiry-month">Expiry Month:</label>
-    <br />
-    <input type="number" id="expiry-month" required min="1" max="12">
-    <br />
-    <label for="expiry-year">Expiry Year:</label>
-    <br />
-    <input type="number" id="expiry-year" required>
-    <br />
-    <label for="security-code">Security Code:</label>
-    <br />
-    <input type="text" id="security-code" required pattern="\d{3}" title="Security code must be exactly 3 digits">
-    <br />
-    <input type="submit" value="Submit">
+    <div class="reservation-info">
+      <h2>New Reservation</h2>
+      <label for="ticket-type">Select Your Ticket Type:</label>
+      <br />
+      <select id="ticket-type" required>
+        <option value="">Select a place</option>
+      </select>
+      <br />
+      <p id="ticket-type-description"></p>
+      <p id="single-ticket-price"></p>
+      <label for="date">Date:</label>
+      <br />
+      <input type="date" id="date" required>
+      <br />
+      <label for="people">Number of People:</label>
+      <br />
+      <input type="number" id="people" required min="1" max="10">
+      <br />
+      <p id="price"></p>
+      <button id="go-to-payment">Go To Payment</button>
+    </div>
+    <div class="payment-info hidden">
+      <h3>Enter Your Card Information</h3>
+      <label for="card-number">Credit Card Number:</label>
+      <br />
+      <input type="text" id="card-number" required pattern="\d{16}"
+        title="Credit card number must be exactly 16 digits">
+      <br />
+      <label for="expiry-month">Expiry Month:</label>
+      <br />
+      <input type="number" id="expiry-month" required min="1" max="12">
+      <br />
+      <label for="expiry-year">Expiry Year:</label>
+      <br />
+      <input type="number" id="expiry-year" required>
+      <br />
+      <label for="security-code">Security Code:</label>
+      <br />
+      <input type="text" id="security-code" required pattern="\d{3}" title="Security code must be exactly 3 digits">
+      <br />
+      <button id="go-back">Go Back</button>
+      <input type="submit" value="Submit">
+    </div>
   </form>
 
 </body>
