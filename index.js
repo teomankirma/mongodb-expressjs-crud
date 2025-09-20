@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -28,15 +30,20 @@ app.use("/delete-reservation", deleteReservationRoute);
 app.use("/ticket-types", ticketTypeRoute);
 app.use("/saved-credit-cards", savedCreditCardsRoute);
 
+const { MONGODB_URI } = process.env;
+
+if (!MONGODB_URI) {
+  console.error("Missing MONGODB_URI environment variable.");
+  process.exit(1);
+}
+
 app.get("/", (req, res) => {
   // Send the "index.html" file
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://teomankirma:v6dfZPzqqIe6VZRY@crud.dce1fia.mongodb.net/MyApp?retryWrites=true&w=majority&appName=CRUD"
-  )
+  .connect(MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(3000, () => {
